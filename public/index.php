@@ -1,165 +1,123 @@
-<<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
-</head>
-<body>
-
-
-
 <?php
-    /**
-     * PHP version 7.2
-     * 
-     * @category Php
-     * @package  Php_Project
-     * @author   Janus Nic <janusnic@gmail.com>
-     * @license  MIT License https://github.com/couchjanus/php7.2-fundamental/LICENSE
-     * @link     https://github.com/couchjanus/php7.2-fundamental
-     **/
 
-                       
-    // require_once realpath(__DIR__).'/../bootstrap/bootstrap.php';                
+// require_once realpath(__DIR__).'/../bootstrap/bootstrap.php'; 
 
-    $foo = "1";  // $foo - это строка (ASCII-код 49)
-    $foo *= 2;   // $foo теперь целое число (2)
-    $foo = $foo * 1.3;  // $foo теперь число с плавающей точкой (2.6)
-    $foo = 5 * "10 Little Piggies"; // $foo - это целое число (50)
-    $foo = 5 * "10 Small Pigs";     // $foo - это целое число (50)
+// вернет текущее значение уровня протоколирования ошибок 22527
+echo error_reporting();
 
-    $foo = "5bar"; // строка
-    $bar = true;   // булевое значение
+echo ini_get('display_errors');
 
-    settype($foo, "integer"); // $foo теперь 5   (целое)
-    settype($bar, "string");  // $bar теперь "1" (строка)
+// Установка значения настройки конфигурации
+ini_set('display_errors', 1);
 
-    // Максимальное значение для "int" равно PHP_INT_MAX.
+echo "<br>display_errors: ", ini_get('display_errors');
 
-    $foo = 10;   // $foo - это целое число
-    $bar = (boolean) $foo;   // $bar - это булев тип
+echo "<h2>Get display errors</h2>";
 
-    $foo = 10;            // $foo - это целое число
-    $str = "$foo";        // $str - это строка
-    $fst = (string) $foo; // $fst - это тоже строка
-    // Это напечатает "они одинаковы"
-    if ($fst === $str) {
-        echo "они одинаковы";
-    }
+echo ini_get('display_errors');
+  
+echo "<h2>Set display errors</h2>";
 
-    
-    // Работает, начиная с версии PHP 5.3.0
-    const HELLO = 'Здравствуй, мир.';
-    const PI = 3.14;
+if (!ini_get('display_errors')) {
+    ini_set('display_errors', '1');
+}   
 
-    define("NUMB", 3.1456);
-    define("CONSTANT", "Здравствуй, мир.");
+echo ini_get('display_errors');
 
-    echo CONSTANT; // выводит "Здравствуй, мир."
-    echo Constant; // выводит "Constant" и предупреждение.
-    
-    echo HELLO;
-    print NUMB;
-    print PI;
+echo "<h2>Set error_reporting</h2>";
+ini_set('error_reporting', E_ALL);
+// вернет текущее значение уровня протоколирования ошибок 22527
+echo error_reporting();
+echo "<h2>значение по умолчанию error_reporting</h2>";
+// значение по умолчанию равно E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED. 
 
-    define("MAXSIZE", 100);
+ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+echo error_reporting();
+// Примеры использования error_reporting()
 
-    echo MAXSIZE;
-    echo constant("MAXSIZE"); // результат аналогичен предыдущему выводу
+// Выключение протоколирования ошибок
+error_reporting(0);
 
-    print_r(get_defined_constants());
+// Включать в отчет простые описания ошибок
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-    // Простой массив
+// Включать в отчет E_NOTICE сообщения (добавятся сообщения о 
+// непроинициализированных переменных или ошибках в именах переменных)
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
-    $array1 = array(
-        "foo" => "bar",
-        "bar" => "foo",
-    );
-    
-    $array2 = array(
-        1    => "a",
-        "1"  => "b",
-        1.5  => "c",
-        true => "d",);
-    var_dump($array2);
+// Добавлять сообщения обо всех ошибках, кроме E_NOTICE
+error_reporting(E_ALL & ~E_NOTICE);
 
-    $array3 = array(
-        "foo" => "bar",
-        "bar" => "foo",
-        100   => -100,
-        -100  => 100,
-    );
-    var_dump($array3);
+// Добавлять в отчет все ошибки PHP
+error_reporting(E_ALL);
 
-    $array4 = array("foo", "bar", "hallo", "world");
-    var_dump($array4);
+echo "<h3>Добавлять в отчет все ошибки PHP</h3>";
+// Добавлять в отчет все ошибки PHP
+error_reporting(-1);
+echo error_reporting();
 
-    $array5 = array(
-            "a",
-            "b",
-    6 => "c",
-            "d",
-    );
-    var_dump($array5);
+// То же, что и error_reporting(E_ALL);
+// вернет текущее значение уровня протоколирования ошибок 22527
 
-    // Доступ к элементам массива с помощью квадратных скобок
-    $array6 = array(
-        "foo" => "bar",
-        42    => 24,
-        "multi" => array(
-            "dimensional" => array(
-                "array" => "foo"
-            )
-        )
-    );
+ini_set('error_reporting', E_ALL);
+echo "<br>", error_reporting();
 
-    var_dump($array6["foo"]);
-    var_dump($array6[42]);
-    var_dump($array6["multi"]["dimensional"]["array"]);
-    
+echo "<h3>Добавлять в отчет все ошибки PHP</h3>";
+ini_set('error_reporting', E_ALL | E_NOTICE | E_STRICT | E_DEPRECATED);
 
-    // И квадратные и фигурные скобки можно взаимозаменяемо использовать 
-    // для доступа к элементам массива 
-    // (то есть и $array[42] и $array{42} равнозначны).
-
-    $arr = array(5 => 1, 12 => 2);
-    $arr[] = 56;    // В этом месте скрипта это то же самое, что и $arr[13] = 56;
-    $arr["x"] = 42; // Это добавляет к массиву новый элемент с ключом "x"
-    unset($arr[5]); // Это удаляет элемент из массива
-    unset($arr);    // Это удаляет массив полностью
-
-    $array = array(1, 2, 3, 4, 5);    // Создаем простой массив.
-    
-    print_r($array);
-    // Теперь удаляем каждый элемент, но сам массив оставляем нетронутым:
-    foreach ($array as $i => $value) {
-        unset($array[$i]);
-    }
-    print_r($array);
-
-    // Добавляем элемент (новым ключом будет 5, вместо 0).
-    $array[] = 6;
-    print_r($array);
-    // Переиндексация:
-    $array = array_values($array);
-    $array[] = 7;
-    print_r($array);
-
-    $earr[] = 'value';
-    print_r($earr);
-
-    // == это оператор, который проверяет эквивалентность и возвращает boolean
-    if ($action == "show_version") {
-        echo "The version is 1.23";
-       
-    }
-
-?>
+echo "<h3>Добавлять в отчет ошибки E_STRICT</h3>";
+ini_set('error_reporting', E_ALL |  E_STRICT);
 
 
-</body>
-</html>
+echo error_reporting();
+
+echo "<h3>include_path</h3>";
+echo ini_get('include_path'); // .:/usr/share/php
+
+
+// set_include_path('/usr/lib/pear');
+
+// // Или так
+// ini_set('include_path', '/usr/lib/pear');
+
+echo '<h3>DIRECTORY_SEPARATOR (string)</h3>';
+echo DIRECTORY_SEPARATOR;
+echo '<h3>PATH_SEPARATOR (string)</h3>';
+echo PATH_SEPARATOR;
+echo '<h3>SCANDIR_SORT_ASCENDING (integer)</h3>';
+echo SCANDIR_SORT_ASCENDING;   
+echo '<h3>SCANDIR_SORT_DESCENDING (integer)</h3>';
+echo SCANDIR_SORT_DESCENDING;   
+echo '<h3>SCANDIR_SORT_NONE (integer)</h3>';
+echo SCANDIR_SORT_NONE;
+
+
+// $path = '/usr/lib/pear';
+// set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+
+// Получение временной зоны по умолчанию
+
+echo "<h2>Get date default timezone</h2>";
+
+echo date_default_timezone_get();
+
+// Получение временной зоны по умолчанию
+
+echo "<h2>Get date timezone from php.ini</h2>";
+
+if (ini_get('date.timezone')) {
+    echo 'date.timezone: ' . ini_get('date.timezone');
+}
+
+// Получение временной зоны по умолчанию
+
+echo "<h2>Set date default timezone</h2>";
+
+date_default_timezone_set('Europe/Kiev');
+
+if (date_default_timezone_get()) {
+    echo 'date_default_timezone_set: ' . date_default_timezone_get() . '<br />';
+}
+
+
+
