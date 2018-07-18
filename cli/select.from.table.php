@@ -1,32 +1,48 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "ghbdtn";
-$dbname = "store";
+$host = "localhost";
+$user = "root";
+$pass = "ghbdtn";
+$dbname = "shopping";
 
 // Create connection
+try {
+  $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+  $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-/* проверка соединения */
-if (mysqli_connect_errno()) {
-    printf("Не удалось подключиться: %s\n", mysqli_connect_error());
-    exit();
+  $stmt = $pdo->query("SELECT * FROM categories");
+  $results = $stmt->fetch(PDO::FETCH_BOTH);
+
+  echo "All categories\n\n";
+  print_r($results);
+
+
+  // $stmt = $pdo->query("SELECT * FROM categories");
+  // $results = $stmt->fetch(PDO::FETCH_ASSOC);
+  // $results = $stmt->fetch(PDO::FETCH_NUM);
+
+  // $stmt = $pdo->query("SELECT name FROM categories");
+  // $results = $stmt->fetch(PDO::FETCH_COLUMN);
+
+  // $stmt = $pdo->query("SELECT name, status FROM categories");
+  //
+  // // $results = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+  // $results = $stmt->fetch(PDO::FETCH_OBJ);
+  //
+  // echo "All categories\n\n";
+  //
+  // print_r($results);
+
+
+  // while($row = $stmt->fetch()) {
+  //       echo $row['name'] . "\n";
+  //   }
+
 }
-echo "Connected successfully\n\n";
-
-// Create sql
-
-$sql = "SELECT * FROM guestbook";
-
-$result = mysqli_query($conn, $sql);
-
-if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "id: " . $row["id"]. " - User Name: " . $row["username"]. " Email: " . $row["email"]. " Comment: " . $row["comment"]. " Created: " . $row["created_at"]. "\n\n";
-    }
-} else {
-    echo "0 results\n";
+catch(PDOException $e) {
+    echo "SQL, у нас проблемы.\n" . $e->getMessage();
+    file_put_contents('PDOErrors.log', $e->getMessage(), FILE_APPEND);
 }
-mysqli_close($conn);
+finally {
+    $DBH = null;
+}

@@ -1,22 +1,24 @@
 <?php
-// Создание MySQL базы данных с помощью MySQLi
-$servername = "localhost";
-$username = "root";
-$password = "ghbdtn";
+
+$host = "localhost";
+$user = "root";
+$pass = "ghbdtn";
+// $dbname = "mydb";
 
 // Create connection
-$conn = mysqli_connect($servername, $username, $password);
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+try {
+  $DBH = new PDO("mysql:host=$host;", $user, $pass);
+  $DBH->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-// Create database
-$sql = "CREATE DATABASE store";
-if (mysqli_query($conn, $sql)) {
-    echo "Database created successfully";
-} else {
-    echo "Error creating database: " . mysqli_error($conn);
+  // Create database
+  $sql = "CREATE DATABASE shopping";
+  $DBH->exec($sql);
+  echo "Database created successfully\n\n";
 }
-
-mysqli_close($conn);
+catch(PDOException $e) {
+    echo "SQL, у нас проблемы.\n" . $e->getMessage();
+    file_put_contents('PDOErrors.log', $e->getMessage(), FILE_APPEND);
+}
+finally {
+    $DBH = null;
+}

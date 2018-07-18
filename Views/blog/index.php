@@ -1,25 +1,29 @@
 <?php
-
 require_once VIEWS.'shared/head.php';
 require_once VIEWS.'shared/navigation.php';
+
+printf("<h1 style='color: #%x%x%x'>%s</h1>", 165, 27, 45, $title);
+
 ?>
-<!-- product Start -->
 
-<h1>Our <b>Cat Members</b></h1>        
+<div class="grid-layout">
+  <?php
+    if ($rowCount>0) {
+        echo "<h3>$rowCount posts found:</h3> ";
 
 
-<h4 class="feature_sub">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </h4>
+        foreach ($posts as $row) {
+          echo "<div class='top'>".$row["title"]."</div>";
+          echo "<div class='content'>".strip_tags($row["content"])."</div>";
+          echo "<div class='added_at'> At: ".strip_tags($row["created_at"])."</div>";
+        }
+    }
+    else {
+      echo "No posts found.... ";
+    }
+?>
 
-<?php for ($i=0; $i<count($posts); $i++) :?>
-    <article class="">
-        <h2><?php echo $posts[$i]['title'] ?></h2>
-        <div><?php echo $posts[$i]['content'] ?></div>
-    </article>
-<?php endfor; ?>
-
-<!-- Our product End -->
+</div>
+<!-- Page End -->
 <div class="cf"></div>
-
-<?php
-require_once VIEWS.'shared/aside.php';
-require_once VIEWS.'shared/footer.php';
+<?php require_once VIEWS.'shared/footer.php';

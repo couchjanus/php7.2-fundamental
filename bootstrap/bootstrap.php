@@ -15,14 +15,10 @@ ini_set('display_startup_errors', 1);
 // Ошибки и протоколирование
 error_reporting(E_ALL | E_NOTICE | E_STRICT | E_DEPRECATED);
 
-function render($path, $data = [])
-{
-    extract($data);
-    return require VIEWS."/{$path}.php";
-}
 
 require_once realpath(__DIR__).'/../config/app.php';
 
+require_once CORE.'Connection.php';
 require_once CORE.'View.php';
 require_once CORE.'Controller.php';
 

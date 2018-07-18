@@ -1,38 +1,32 @@
 <?php
-// Создание table с помощью MySQLi
-// create.table.php
-$servername = "localhost";
-$username = "root";
-$password = "ghbdtn";
-$dbname = "store";
+
+$host = "localhost";
+$user = "root";
+$pass = "ghbdtn";
+$dbname = "shopping";
 
 // Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+try {
+  $DBH = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+  $DBH->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-/* проверка соединения */
-if (mysqli_connect_errno()) {
-    printf("Не удалось подключиться: %s\n", mysqli_connect_error());
-    exit();
+  // Create database
+
+  $sql = "CREATE TABLE categories (
+            id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+            PRIMARY KEY(id),
+            name VARCHAR(20) NOT NULL,
+            status TINYINT(1) UNSIGNED DEFAULT 1 NOT NULL
+            )";
+
+  $DBH->exec($sql);
+
+  echo "Table created successfully\n\n";
 }
-echo "Connected successfully\n\n";
-
-$sql = "CREATE TABLE guestbook (
-    id int(11) NOT NULL AUTO_INCREMENT,
-    username varchar(25) NOT NULL,
-    email varchar(25) NOT NULL,
-    comment text NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);";
- 
-
-// Create table
-
-if (mysqli_query($conn, $sql)) {
-    echo "Table guestbook created successfully\n\n";
-
-} else {
-    printf("Error creating table: %s\n", mysqli_error($conn));
+catch(PDOException $e) {
+    echo "SQL, у нас проблемы.\n" . $e->getMessage();
+    file_put_contents('PDOErrors.log', $e->getMessage(), FILE_APPEND);
 }
-
-mysqli_close($conn);
+finally {
+    $DBH = null;
+}
