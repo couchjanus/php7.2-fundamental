@@ -36,34 +36,28 @@ if (file_exists($filename)) {
 }
 
 // Проверить наличие такого запроса в routes
-
+$param = null;
 foreach ($routes as $route => $path) {
 
     //Сравниваем route и $uri
     if ($route === $uri) {
 
+        // $list = explode('/', $uri);
+        // $param = array_pop($list);
+
         // Определить контроллер
-
-        list($controller, $controllerPath) = getPathAction($path);
-        // $action = 'index';
-
-
         list($segments, $controllerPath) = getPathAction($path);
         list($controller, $action) = explode('@', $segments);
-
         $controllerFile = CONTROLLERS .$controllerPath . $controller . EXT;
 
         if (file_exists($controllerFile)) {
             include_once $controllerFile;
             $controller = new $controller;
-
             if (method_exists($controller, $action)) {
-                $controller->$action();
+                $controller->$action($param);
             }
-
             $result = true;
         }
-
         if ($result !== null) {
             break;
         }
