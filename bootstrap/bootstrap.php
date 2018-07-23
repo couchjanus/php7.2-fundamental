@@ -20,6 +20,7 @@ require_once realpath(__DIR__).'/../config/app.php';
 
 require_once CORE.'Connection.php';
 require_once CORE.'View.php';
+require_once CORE.'Slug.php';
 require_once CORE.'Controller.php';
 
 require_once MODELS.'Post.php';

@@ -50,31 +50,29 @@ class ProductsController extends Controller
      * @param $id
      * @return bool
     */
-    public function edit($id)
+    public function edit($vars)
     {
-        var_dump($id);
         //Получаем информацию о выбранном товаре
-        // extract($vars);
-        // $id = (int) $id;
-        // $product = Product::getProductById($id);
-        // var_dump($product);
+        extract($vars);
+        $product = Product::getProductById($id);
+
         //Принимаем данные из формы
-        // if (isset($_POST) and !empty($_POST)) {
-        //     $options['name'] = trim(strip_tags($_POST['name']));
-        //     $options['price'] = trim(strip_tags($_POST['price']));
-        //     $options['category'] = trim(strip_tags($_POST['category']));
-        //     $options['brand'] = trim(strip_tags($_POST['brand']));
-        //     $options['description'] = trim(strip_tags($_POST['description']));
-        //     $options['is_new'] = trim(strip_tags($_POST['is_new']));
-        //     $options['status'] = trim(strip_tags($_POST['status']));
-        //     Product::update($id, $options);
-        //     header('Location: /admin/products');
-        // }
+        if (isset($_POST) and !empty($_POST)) {
+            $options['name'] = trim(strip_tags($_POST['name']));
+            $options['price'] = trim(strip_tags($_POST['price']));
+            $options['category'] = trim(strip_tags($_POST['category']));
+            $options['brand'] = trim(strip_tags($_POST['brand']));
+            $options['description'] = trim(strip_tags($_POST['description']));
+            $options['is_new'] = trim(strip_tags($_POST['is_new']));
+            $options['status'] = trim(strip_tags($_POST['status']));
+            Product::update($id, $options);
+            header('Location: /admin/products');
+        }
       
-        // $data['product'] = Product::getProductById($id);
-        // $data['categories'] = Category::index();
-        // $data['title'] = 'Admin Product Edit Page ';
-        // $this->_view->render('admin/products/edit', $data);
+        $data['product'] = Product::getProductById($id);
+        $data['categories'] = Category::index();
+        $data['title'] = 'Admin Product Edit Page ';
+        $this->_view->render('admin/products/edit', $data);
         
     }
 
