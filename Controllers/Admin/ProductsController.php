@@ -6,6 +6,7 @@
 
 class ProductsController extends Controller
 {
+    private $_resource = 'products';
 
     /**
      * Просмотр всех товаров
@@ -25,23 +26,30 @@ class ProductsController extends Controller
     */
     public function create()
     {
-        //Принимаем данные из формы
-        if (isset($_POST) and !empty($_POST)) {
-
-            $options['name'] = trim(strip_tags($_POST['name']));
-            $options['price'] = trim(strip_tags($_POST['price']));
-            $options['category'] = trim(strip_tags($_POST['category']));
-            $options['brand'] = trim(strip_tags($_POST['brand']));
-            $options['description'] = trim(strip_tags($_POST['description']));
-            $options['is_new'] = trim(strip_tags($_POST['is_new']));
-            $options['status'] = trim(strip_tags($_POST['status']));
-            Product::store($options);
-            header('Location: /admin/products');
-        }
-
         $data['title'] = 'Admin Product Add New Product ';
         $data['categories'] = Category::index();
         $this->_view->render('admin/products/create', $data);
+    }
+
+    /**
+     * Сохранение товара
+     *
+     * @return bool
+    */
+    public function store()
+    {
+        //Принимаем данные из формы
+        $options['name'] = trim(strip_tags($_POST['name']));
+        $options['price'] = trim(strip_tags($_POST['price']));
+        $options['category'] = trim(strip_tags($_POST['category']));
+        $options['brand'] = trim(strip_tags($_POST['brand']));
+        $options['description'] = trim(strip_tags($_POST['description']));
+        $options['is_new'] = trim(strip_tags($_POST['is_new']));
+        $options['status'] = trim(strip_tags($_POST['status']));
+      
+        Product::store($options);
+ 
+        $this->redirect('/admin/products');
     }
 
     /**
@@ -99,6 +107,7 @@ class ProductsController extends Controller
         extract($vars);
         $data['title'] = 'Admin Show Product ';
         $data['product'] = Product::getProductById($id);
+        $data['picture'] = Picture::getPictureById($id, $this->_resource);
         $this->_view->render('admin/products/show', $data);
 
     }
