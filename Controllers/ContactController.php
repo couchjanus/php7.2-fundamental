@@ -1,12 +1,10 @@
 <?php
-// ContactController.php
-
-class ContactController
+class ContactController extends Controller
 {
-    // Class properties and methods go here   
-    public function __construct()
+    public function index()
     {
-        render('home/contact', ['title'=>'Contact <b>Our Cats</b>']);
+        $data['title'] = 'Our <b>Cats Contact</b>';
+        $data['subtitle'] = 'Lorem Ipsum не є випадковим набором літер';
+        $this->_view->render('home/contact', $data);
     }
-
 }

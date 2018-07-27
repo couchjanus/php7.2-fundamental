@@ -26,15 +26,9 @@ require_once CORE.'Controller.php';
 require_once MODELS.'Post.php';
 require_once MODELS.'Category.php';
 require_once MODELS.'Product.php';
-
+require_once MODELS.'Picture.php';
 require_once CORE.'Request.php';
 require_once CORE.'Router.php';
-
-
-// $obj = Router::load(CONFIG.'routes.php');
-
-// var_dump($obj);
-
 
 Router::load(CONFIG.'routes.php')
     ->directPath(Request::uri(), Request::method());

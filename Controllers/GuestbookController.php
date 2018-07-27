@@ -1,46 +1,45 @@
 <?php
-require_once CONFIG.'db.php';
+
+$username = null;
+$email = null;
+$message =  null;
+$result = false;
 
 if (!empty($_POST)) {
-    
-    if (!$_POST['username'] or !$_POST['email'] or !$_POST['comment']) {
+
+    if ( !$_POST['username'] or !$_POST['email'] or !$_POST['message']){
         echo "<b>please complete all the fields</b><br><br>";
-    } else {
-        // подключаемся к серверу
-        $conn = mysqli_connect(HOST, DBUSER, DBPASSWORD, DATABASE) 
-        or die("Ошибка " . mysqli_error($conn));
-
-
-        $username = mysqli_real_escape_string($conn, $_POST['username']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-        $comment = mysqli_real_escape_string($conn, $_POST['comment']);
-
-        // выполняем операции с базой данных
-
-        $sql = "INSERT INTO guestbook (username, email, comment) VALUES ('$username', '$email', '$comment')";
-
-        mysqli_query($conn, $sql) or die("Ошибка: " . mysqli_error($conn));
-        mysqli_close($conn);
     }
-    
+
+    else{
+        // подключаемся к серверу
+        $pdo = makeConnection();
+        // выполняем операции с базой данных
+        $sql = "INSERT INTO guestbook (username, email, comment) VALUES (?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindParam(1, $username);
+        $stmt->bindParam(2, $email);
+        $stmt->bindParam(3, $comment);
+
+        // вставим одну строку
+
+        $username = htmlspecialchars($_POST['username']);
+        $email = htmlspecialchars($_POST['email']);
+        $comment = htmlspecialchars($_POST['message']);
+        $stmt->execute();
+
+    }
+
 }
 
-$conn = mysqli_connect(HOST, DBUSER, DBPASSWORD, DATABASE) 
-        or die("Ошибка " . mysqli_error($conn));
-
+$pdo = makeConnection();
 $comments = [];
-
 $sql = "SELECT * FROM guestbook";
+$stmt = $pdo->query($sql);
 
-$result = mysqli_query($conn, $sql);
+$comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$resCount = mysqli_num_rows($result);
+$rowCount = $stmt->rowCount();
 
-while ($row = mysqli_fetch_assoc($result)) {
-    array_push($comments, $row);
-}
-
-// закрываем подключение
-mysqli_close($conn);
-
-render('guestbook/index', ['title'=>"Cat's GuestBook", 'comments'=>$comments, 'count'=>$resCount ]);
+require_once VIEWS.'guestbook/index.php';
