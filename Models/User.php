@@ -99,6 +99,16 @@ class User
 
         return $res->execute();
     }
+
+    // check if user has a specific privilege
+    
+    public function hasPrivilege($perm)
+    {
+        if ($this->role->hasPerm($perm)) {
+            return true;
+        }
+        return false;
+    }
       
     /**
      * Если в контроллере все ОК, принимаем данные и записываем в БД
@@ -192,6 +202,20 @@ class User
         return false;
     }
 
+    public static function checkPhoneNumber($id)
+    {
+        $db = Connection::makeConnection();
+        $sql = "SELECT phone_number FROM users
+                    WHERE id = :id";
+        $res = $db->prepare($sql);
+        $res->bindParam(':id', $id, PDO::PARAM_INT);
+        $res->execute();
+
+        if ($res->fetchColumn())
+            return $res->fetchColumn();
+        return false;
+    }
+
     /**
      * Проверка на существовние введенных данных при ааторизации
      *
@@ -230,8 +254,8 @@ class User
      */
     public static function auth($userId)
     {
-        $_SESSION['userId'] = $userId;
-        $_SESSION['logged'] = true;
+        Session::set('userId', $userId);
+        Session::set('logged', true);
     }
 
     /**
@@ -242,8 +266,8 @@ class User
     public static function checkLog()
     {
          //Если сессия есть, то возвращаем id пользователя
-        if ($_SESSION['userId']) {
-            return $_SESSION['userId'];
+        if ((Session::get('userId'))) {
+            return Session::get('userId');
         }
         header('Location: user/login');
     }
@@ -255,8 +279,8 @@ class User
      * @return bool
      */
     public static function isGuest()
-    {    
-        if ($_SESSION['logged'] == true) {
+    {
+        if (Session::get('logged') == true) {
             return false;
         }
         return true;
@@ -279,4 +303,21 @@ class User
         $res->bindParam(':id', $userId);
         $res->execute();
     }
+
+
+    public static function updateProfile($userId, $options)
+    {
+        $db = Connection::makeConnection();
+        $sql = "UPDATE users
+                    SET phone_number = :phone_number, first_name = :first_name, last_name = :last_name
+                    WHERE id = :id";
+        $res = $db->prepare($sql);
+        // $res->bindParam(':name', $options['name'], PDO::PARAM_STR);
+        $res->bindParam(':phone_number', $options['phone_number'], PDO::PARAM_STR);
+        $res->bindParam(':first_name', $options['first_name'], PDO::PARAM_STR);
+        $res->bindParam(':last_name', $options['last_name'], PDO::PARAM_STR);
+        $res->bindParam(':id', $userId, PDO::PARAM_INT);
+        return $res->execute();
+    }
+    
 }

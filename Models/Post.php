@@ -1,13 +1,18 @@
 <?php
 
-class Post
+class Post extends QueryBuider
 {
-    public static function selectAll()
+    public function selectAll()
     {
-        $pdo = Connection::makeConnection();
-        $statment = $pdo->prepare("select * from posts");
-        $statment->execute();
-        return $statment->fetchAll();
+        // $pdo = Connection::makeConnection();
+        // $statment = $pdo->prepare("select * from posts");
+        // $statment->execute();
+        // return $statment->fetchAll();
+
+        // $pdo = Connection::makeConnection();
+        $query = "select * from posts";
+        // $statment->execute();
+        return $this->query($query);
     }
 
     public static function store($parameters)
@@ -63,7 +68,7 @@ class Post
         return $res->execute();
     }
 
-    public static function update($id, $options) 
+    public static function updateMe($id, $options) 
     {
 
         $con = Connection::makeConnection();
