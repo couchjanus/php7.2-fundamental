@@ -53,6 +53,20 @@ $router->post('admin/roles/create', 'Admin\RolesController@create');
 $router->post('admin/roles/edit/{id}', 'Admin\RolesController@edit');
 $router->post('admin/roles/delete/{id}', 'Admin\RolesController@delete');
 
+
+
+
+$router->get('admin/permissions', 'Admin\PermissionsController@index');
+$router->get('admin/permissions/create', 'Admin\PermissionsController@create');
+$router->get('admin/permissions/edit/{id}', 'Admin\PermissionsController@edit');
+$router->get('admin/permissions/delete/{id}', 'Admin\PermissionsController@delete');
+
+$router->post('admin/permissions/create', 'Admin\PermissionsController@create');
+$router->post('admin/permissions/edit/{id}', 'Admin\PermissionsController@edit');
+$router->post('admin/permissions/delete/{id}', 'Admin\PermissionsController@delete');
+
+
+
 $router->get('admin/users', 'Admin\UsersController@index');
 $router->get('admin/users/create', 'Admin\UsersController@create');
 $router->post('admin/users/create', 'Admin\UsersController@create');
@@ -62,6 +76,18 @@ $router->post('admin/users/edit/{id}', 'Admin\UsersController@edit');
 
 $router->get('admin/users/delete/{id}', 'Admin\UsersController@delete');
 $router->post('admin/users/delete/{id}', 'Admin\UsersController@delete');
+
+$router->get('admin/orders', 'Admin\OrdersController@index');
+$router->get('admin/orders/view/{id}', 'Admin\OrdersController@view');
+$router->get('admin/orders/edit/{id}', 'Admin\OrdersController@edit');
+
+$router->get('admin/orders/delete/{id}', 'Admin\OrdersController@delete');
+$router->post('admin/orders/edit/{id}', 'Admin\OrdersController@edit');
+$router->post('admin/orders/delete/{id}', 'Admin\OrdersController@delete');
+
+$router->post('check', 'UsersController@actionCheck');
+$router->post('cart', 'CartController@index');
+
 
 $router->get('register', 'UsersController@signup');
 $router->post('register', 'UsersController@signup');
@@ -73,3 +99,13 @@ $router->get('logout', 'UsersController@logout');
 $router->post('logout', 'UsersController@logout');
 
 $router->get('api/shop', 'HomeController@getProduct');
+
+$router->get('profile', 'ProfileController@index');
+$router->get('profile/edit', 'ProfileController@edit');
+$router->get('profile/orders', 'ProfileController@ordersList');
+
+$router->get('profile/orders/view/{id}', 'ProfileController@ordersView');
+$router->get('profile/orders/edit/{id}', 'ProfileController@ordersEdit');
+$router->get('profile/orders/delete/{id}', 'ProfileController@ordersDelete');
+
+$router->post('profile/edit', 'ProfileController@edit');

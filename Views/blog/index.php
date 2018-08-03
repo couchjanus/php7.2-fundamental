@@ -10,7 +10,7 @@ require_once VIEWS.'shared/navigation.php';
 <?php if ($rowCount>0) : ?>
 
   <?php foreach ($posts as $post) : ?>
-  
+
     <article class="entry">
     <header class="entry-header">
       <h2 class="entry-title">

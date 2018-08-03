@@ -59,7 +59,7 @@ class UsersController extends Controller
             $options['password'] = trim(strip_tags($_POST['password']));
             $options['role'] = $_POST['role'];
             $options['status'] = $_POST['status'];
-            User::edit($id, $options);
+            User::update($id, $options);
             header('Location: /admin/users');
         }
         $data['title'] = 'Admin User Edit Page ';
