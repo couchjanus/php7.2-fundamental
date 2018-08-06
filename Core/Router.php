@@ -8,14 +8,6 @@ class Router
         'POST' => []
     ];
 
-    // protected $routes = [];
- 
-    // public function define($routes)
-    // {
-    //     $this->routes = $routes;
-    // }
-
-
     public static function load($file)
     {
         $router = new static;
